@@ -1,0 +1,5 @@
+PyMuPDF>=1.26
+Pillow>=11
+pytesseract>=0.3.13
+opencv-python-headless>=4.10
+pypdf>=5

@@ -1,0 +1,16 @@
+﻿# Local/generated files
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+node_modules/
+dist/
+build/
+*.log
+.env
+.env.*
+tmp/
+temp/
