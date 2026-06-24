@@ -1,7 +1,6 @@
 const workspaces = {
   editor: document.querySelector("#editor-workspace"),
   ocr: document.querySelector("#ocr-workspace"),
-  review: document.querySelector("#review-workspace"),
 };
 
 const statusMessage = document.querySelector("#status-message");
@@ -119,7 +118,8 @@ document.querySelectorAll("[data-action]").forEach((button) => {
     const labels = {
       open: "Open PDF dialog would appear here",
       save: "Document saved",
-      export: "Export panel ready",
+      export: "Export PDF ready",
+      support: "Voluntary support page would open here",
       "add-page": "Blank page added",
       "add-image": "Image picker would appear here",
     };

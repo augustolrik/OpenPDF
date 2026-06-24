@@ -19,14 +19,15 @@
 
         <label class="app-search" aria-label="Search commands">
           <span>Search</span>
-          <input placeholder="Find tools, pages, OCR, export..." />
+          <input placeholder="Find tools, pages, OCR, support..." />
           <kbd>Ctrl K</kbd>
         </label>
 
         <div class="quick-actions" aria-label="Primary actions">
           <button class="button button-yellow" data-action="open">Open PDF</button>
           <button class="button button-pink" data-action="save">Save</button>
-          <button class="button button-soft" data-action="export">Export</button>
+          <button class="button button-soft" data-action="export">Export PDF</button>
+          <button class="button support-button" data-action="support">Support</button>
         </div>
 
         <div class="window-chrome" aria-hidden="true">
@@ -39,7 +40,6 @@
       <nav class="workspace-tabs" aria-label="Workspace tabs">
         <button class="workspace-tab active" data-workspace="editor">PDF Editor</button>
         <button class="workspace-tab" data-workspace="ocr">OCR Generator</button>
-        <button class="workspace-tab" data-workspace="review">Review & Export</button>
       </nav>
 
       <main>
@@ -85,22 +85,15 @@
           </aside>
 
           <section class="editor-stage">
-            <div class="doc-summary">
-              <div class="summary-card active">
-                <span>Current file</span>
+            <div class="stage-bar">
+              <div>
+                <span class="eyebrow">Current file</span>
                 <strong>lesson-material.pdf</strong>
               </div>
-              <div class="summary-card">
-                <span>Pages</span>
-                <strong>3</strong>
-              </div>
-              <div class="summary-card">
-                <span>OCR layer</span>
-                <strong>Ready</strong>
-              </div>
-              <div class="summary-card">
-                <span>Autosave</span>
-                <strong>Off</strong>
+              <div class="stage-meta">
+                <span>Page 1 of 3</span>
+                <span>100%</span>
+                <span>OCR ready</span>
               </div>
             </div>
 
@@ -208,10 +201,11 @@
               <input type="checkbox" checked />
             </label>
 
-            <div class="store-card">
-              <span class="eyebrow">Store ready</span>
-              <strong>Modern desktop shell</strong>
-              <p>Designed for Electron, Tauri, or WebView2 packaging with MSIX.</p>
+            <div class="support-card">
+              <span class="eyebrow">Free app</span>
+              <strong>Voluntary support</strong>
+              <p>PDFeditEasy can stay free, with an optional support button for users who want to help development.</p>
+              <button class="button button-yellow wide" data-action="support">Support project</button>
             </div>
           </aside>
         </section>
@@ -294,30 +288,6 @@
           </aside>
         </section>
 
-        <section class="workspace" id="review-workspace">
-          <div class="review-board">
-            <div class="hero-card">
-              <span class="eyebrow">Release view</span>
-              <h2>Ready for Microsoft Store polish</h2>
-              <p>
-                This UI is structured for a desktop web shell: responsive panels,
-                keyboard-friendly controls, clean focus states, and a clear path to
-                MSIX packaging.
-              </p>
-              <div class="hero-actions">
-                <button class="button button-yellow">Preview app</button>
-                <button class="button button-soft">Packaging guide</button>
-              </div>
-            </div>
-
-            <div class="checklist">
-              <div><b>OK</b><span>Modern Fluent-inspired shell</span></div>
-              <div><b>OK</b><span>Editor and OCR workflows unified</span></div>
-              <div><b>OK</b><span>Store packaging architecture documented</span></div>
-              <div><b>NEXT</b><span>Connect this frontend to the Python PDF engine</span></div>
-            </div>
-          </div>
-        </section>
       </main>
 
       <footer class="statusbar">
