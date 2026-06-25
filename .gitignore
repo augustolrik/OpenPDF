@@ -11,6 +11,7 @@ dist/
 build/
 *.log
 desktop.ini
+.folder_icon_blue.ico
 .env
 .env.*
 tmp/
