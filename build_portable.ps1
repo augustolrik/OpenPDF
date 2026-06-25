@@ -8,7 +8,7 @@ python -m PyInstaller `
     --onedir `
     --windowed `
     --name OpenPDF `
-    --icon PDFeditEasy.ico `
+    --icon OpenPDF.ico `
     --collect-all pymupdf `
     --exclude-module pandas `
     app.py

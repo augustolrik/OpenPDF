@@ -33,7 +33,7 @@ from pdf_engine import (
 )
 
 
-APP_TITLE = "Open PDF"
+APP_TITLE = "OpenPDF"
 PAGE_MARGIN = 22
 COLORS = {
     "purple": "#6036A6",
@@ -297,18 +297,33 @@ class PdfEditor(tk.Tk):
         header.pack_propagate(False)
 
         brand = tk.Frame(header, bg=COLORS["purple_dark"])
-        brand.pack(side="left", padx=(18, 24), fill="y")
+        brand.pack(side="left", padx=(16, 24), fill="y")
+        logo_stack = tk.Frame(brand, bg=COLORS["purple_dark"])
+        logo_stack.pack(side="left", pady=7)
         logo = tk.Canvas(
-            brand, width=43, height=43, bg=COLORS["purple_dark"], highlightthickness=0
+            logo_stack, width=48, height=42, bg=COLORS["purple_dark"], highlightthickness=0
         )
-        logo.pack(side="left", pady=12)
-        rounded_rectangle(logo, 2, 2, 41, 41, 13, fill=COLORS["yellow"], outline="")
-        logo.create_text(21, 21, text="OP", fill=COLORS["purple_dark"], font=("Segoe UI Black", 11))
+        logo.pack()
+        rounded_rectangle(logo, 3, 8, 45, 40, 13, fill=COLORS["yellow"], outline="")
+        logo.create_polygon(10, 14, 16, 3, 22, 15, fill=COLORS["yellow"], outline="")
+        logo.create_polygon(26, 15, 32, 3, 38, 14, fill=COLORS["yellow"], outline="")
+        logo.create_oval(16, 21, 20, 25, fill=COLORS["purple_dark"], outline="")
+        logo.create_oval(29, 21, 33, 25, fill=COLORS["purple_dark"], outline="")
+        logo.create_polygon(23, 27, 25, 30, 27, 27, fill=COLORS["pink"], outline="")
+        logo.create_line(24, 31, 18, 34, fill=COLORS["purple_dark"], width=1)
+        logo.create_line(26, 31, 32, 34, fill=COLORS["purple_dark"], width=1)
+        tk.Label(
+            logo_stack,
+            text="OpenPDF",
+            bg=COLORS["purple_dark"],
+            fg=COLORS["yellow"],
+            font=("Segoe UI Semibold", 7),
+        ).pack()
         title_box = tk.Frame(brand, bg=COLORS["purple_dark"])
         title_box.pack(side="left", padx=(10, 0), pady=9)
         tk.Label(
             title_box,
-            text="Open PDF",
+            text="OpenPDF",
             bg=COLORS["purple_dark"],
             fg=COLORS["white"],
             font=("Segoe UI Semibold", 17),
@@ -358,7 +373,7 @@ class PdfEditor(tk.Tk):
         self.notebook.pack(fill="both", expand=True)
         self.editor_tab = tk.Frame(self.notebook, bg=COLORS["surface"])
         self.ocr_tab = tk.Frame(self.notebook, bg=COLORS["surface"])
-        self.notebook.add(self.editor_tab, text="Open PDF")
+        self.notebook.add(self.editor_tab, text="OpenPDF")
         self.notebook.add(self.ocr_tab, text="OCR Generator")
 
         body = tk.PanedWindow(
@@ -2087,7 +2102,7 @@ class PdfEditor(tk.Tk):
                     self.ocr_set_busy(False, f"Searchable PDF saved: {value}")
                     if messagebox.askyesno(
                         APP_TITLE,
-                        f"The searchable PDF was saved:\n{value}\n\nOpen it in the Open PDF tab?",
+                        f"The searchable PDF was saved:\n{value}\n\nOpen it in the OpenPDF tab?",
                     ):
                         self.open_pdf_path(value)
                 elif kind == "ocr_error":

@@ -1,4 +1,7 @@
-Open PDF Portable
+OpenPDF Portable
+
+OpenPDF is under development.
+The cat logo is part of the OpenPDF brand.
 ====================
 
 Run OpenPDF.exe directly from this folder.

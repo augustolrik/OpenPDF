@@ -1,64 +1,71 @@
-# Open PDF
+# OpenPDF
 
-Open PDF is a local Windows PDF editor built with Python, Tkinter, PyMuPDF,
+OpenPDF is a free local Windows PDF editor built with Python, Tkinter, PyMuPDF,
 Pillow, and Tesseract OCR.
 
-## Features
+OpenPDF is under development. The current recommended app is the Python/Tkinter
+desktop version. The cat logo is part of the OpenPDF brand.
 
-- OCR Generator tab for turning photos or screenshots into searchable PDFs
+## Current Features
+
 - Open and save PDF files
+- Add blank pages and insert pages from another PDF
+- Delete, move, and reorder pages
 - Replace an existing line of PDF text
-- Insert bordered text boxes
-- Draw solid, dotted, and arrow lines
-- Draw rectangles, squares, and circles
-- Choose separate edge and fill colours
-- Select inserted objects and drag them to move
-- Resize objects with corner handles
-- Rotate or delete selected photos, text, lines, and figures
+- Insert editable text boxes
 - Insert and scale images
-- Add blank pages
-- Insert pages from another PDF
-- Delete and reorder pages
-- Run OCR on specific pages and add invisible searchable text
-- Undo the last 15 editing operations
+- Draw lines, arrows, rectangles, squares, and circles
+- Choose edge colour, fill colour, line style, and line width
+- Move, resize, rotate, edit, and delete inserted objects
+- Run OCR on opened PDF pages to add an invisible searchable text layer
+- Use the OCR Generator tab to turn photos/screenshots into searchable PDFs
+- Undo recent editing operations with `Ctrl+Z`
 
-## Install and start
+## Portable App
 
-1. Run `Setup.bat`.
-2. Install Tesseract OCR if Setup reports that it is missing:
-   https://github.com/UB-Mannheim/tesseract/wiki
-3. Run `Start Open PDF.bat`.
+The rebuilt portable app is in:
 
-## Modern HTML GUI Prototype
+```text
+dist\OpenPDF\OpenPDF.exe
+```
 
-A Microsoft Store-style HTML interface prototype is available in
-`web_gui/index.html`. Run `web_gui/Open Web GUI.bat` to preview it.
+To share it on a USB stick, copy the whole `dist\OpenPDF` folder. Do not copy
+only `OpenPDF.exe`; it needs the `_internal` and `tesseract` folders beside it.
 
-The current production app is still the Python/Tkinter version. The HTML GUI is
-the planned frontend for a future Electron, Tauri, WebView2, or pywebview build.
+The portable ZIP is:
 
-## Editing
+```text
+dist\OpenPDF_Portable.zip
+```
 
-Use the **OCR Generator** tab to add images or a folder, inspect processed pages,
-edit OCR text, export a searchable PDF, and open it directly in the **Open PDF**
-tab.
+## Run From Source
 
-Choose a tool on the toolbar:
+1. Install Python 3.14 or newer.
+2. Run `Setup.bat`.
+3. Install Tesseract OCR if setup reports that it is missing:
+   `https://github.com/UB-Mannheim/tesseract/wiki`
+4. Run `Start Open PDF.bat`.
 
-- **Change text:** click an existing text line, edit it in the dialog, and press OK.
-- **Text box:** drag a rectangle, then enter the text and font size.
-- **Line:** choose solid, dotted, or arrow, then drag from start to end.
-- **Shapes:** choose rectangle, square, or circle and select edge/fill colours.
-- **Image:** drag the destination rectangle, then select an image.
-- **Select:** click an inserted object, drag inside it to move, or drag a yellow
-  corner handle to resize. Use the object controls above the page to rotate or
-  delete it.
-- **Edit text:** select a text box and click **Edit text**, or double-click the
-  text box directly.
+## Build Portable EXE
 
-Use **OCR pages** and enter page numbers such as `1,3-5` or `all`.
-Press `Ctrl+Z` to undo.
+Run:
 
-Text replacement covers the original line with white and writes replacement
-text using Helvetica. Complex layouts, unusual embedded fonts, transparency,
-and text over non-white backgrounds can require manual cleanup.
+```powershell
+.\build_portable.ps1
+```
+
+This creates:
+
+```text
+dist\OpenPDF\OpenPDF.exe
+dist\OpenPDF_Portable.zip
+```
+
+## OCR Notes
+
+OCR on an opened PDF adds an invisible searchable text layer. The page may look
+unchanged. After OCR finishes, save the PDF and test by searching/selecting text
+in a PDF reader.
+
+If OCR reports zero readable words, the scan may already contain real text, may
+be too blurry, or may need better contrast/language support.

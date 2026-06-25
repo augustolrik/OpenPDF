@@ -31,29 +31,77 @@ for size in SIZES:
         radius=radius,
         fill=YELLOW,
     )
-    draw.rounded_rectangle(
+    head = (
+        round(size * 0.20),
+        round(size * 0.30),
+        round(size * 0.80),
+        round(size * 0.82),
+    )
+    draw.rounded_rectangle(head, radius=max(2, round(size * 0.18)), fill=PURPLE)
+    draw.polygon(
+        [
+            (round(size * 0.24), round(size * 0.36)),
+            (round(size * 0.33), round(size * 0.13)),
+            (round(size * 0.43), round(size * 0.38)),
+        ],
+        fill=PURPLE,
+    )
+    draw.polygon(
+        [
+            (round(size * 0.57), round(size * 0.38)),
+            (round(size * 0.67), round(size * 0.13)),
+            (round(size * 0.76), round(size * 0.36)),
+        ],
+        fill=PURPLE,
+    )
+    eye = max(1, round(size * 0.035))
+    draw.ellipse(
         (
-            round(size * 0.56),
-            round(size * 0.56),
-            round(size * 0.90),
-            round(size * 0.90),
+            round(size * 0.36) - eye,
+            round(size * 0.52) - eye,
+            round(size * 0.36) + eye,
+            round(size * 0.52) + eye,
         ),
-        radius=max(1, round(size * 0.10)),
+        fill=YELLOW,
+    )
+    draw.ellipse(
+        (
+            round(size * 0.64) - eye,
+            round(size * 0.52) - eye,
+            round(size * 0.64) + eye,
+            round(size * 0.52) + eye,
+        ),
+        fill=YELLOW,
+    )
+    draw.polygon(
+        [
+            (round(size * 0.47), round(size * 0.62)),
+            (round(size * 0.50), round(size * 0.67)),
+            (round(size * 0.53), round(size * 0.62)),
+        ],
         fill=PINK,
     )
-    label_font = font(max(7, round(size * 0.28)))
-    draw.text(
-        (size * 0.23, size * 0.20),
-        "PDF",
-        fill=PURPLE,
-        font=label_font,
-        anchor="la",
+    draw.line(
+        [
+            (round(size * 0.49), round(size * 0.70)),
+            (round(size * 0.38), round(size * 0.75)),
+        ],
+        fill=YELLOW,
+        width=max(1, round(size * 0.015)),
+    )
+    draw.line(
+        [
+            (round(size * 0.51), round(size * 0.70)),
+            (round(size * 0.62), round(size * 0.75)),
+        ],
+        fill=YELLOW,
+        width=max(1, round(size * 0.015)),
     )
     images.append(image)
 
 images[-1].save(
-    "PDFeditEasy.ico",
+    "OpenPDF.ico",
     format="ICO",
     sizes=[(size, size) for size in SIZES],
 )
-print("Created PDFeditEasy.ico")
+print("Created OpenPDF.ico")
