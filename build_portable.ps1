@@ -7,7 +7,7 @@ python -m PyInstaller `
     --clean `
     --onedir `
     --windowed `
-    --name PDFeditEasy `
+    --name OpenPDF `
     --icon PDFeditEasy.ico `
     --collect-all pymupdf `
     --exclude-module pandas `
@@ -29,7 +29,7 @@ if (-not $tesseractSource) {
     throw "Tesseract OCR was not found."
 }
 
-$portable = Join-Path $PSScriptRoot "dist\PDFeditEasy"
+$portable = Join-Path $PSScriptRoot "dist\OpenPDF"
 $ocrTarget = Join-Path $portable "tesseract"
 $tessdataTarget = Join-Path $ocrTarget "tessdata"
 New-Item -ItemType Directory -Force -Path $tessdataTarget | Out-Null
@@ -45,7 +45,7 @@ Copy-Item `
 Copy-Item "$tesseractSource\doc\LICENSE" "$ocrTarget\LICENSE-Tesseract.txt" -Force
 Copy-Item "$PSScriptRoot\PORTABLE_README.txt" "$portable\README.txt" -Force
 
-$zip = Join-Path $PSScriptRoot "dist\PDFeditEasy_Portable.zip"
+$zip = Join-Path $PSScriptRoot "dist\OpenPDF_Portable.zip"
 Compress-Archive -Path $portable -DestinationPath $zip -CompressionLevel Optimal -Force
 
 Write-Host ""

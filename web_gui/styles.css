@@ -265,7 +265,7 @@ main {
 .workspace {
   display: none;
   height: 100%;
-  grid-template-columns: 230px minmax(640px, 1fr) 270px;
+  grid-template-columns: 205px minmax(720px, 1fr) 235px;
   gap: 12px;
   padding: 12px;
 }
@@ -424,7 +424,7 @@ main {
 }
 
 .editor-stage {
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr);
 }
 
 .ocr-stage {
@@ -512,6 +512,24 @@ main {
   overflow-y: hidden;
 }
 
+.side-tools {
+  display: grid;
+  gap: 7px;
+}
+
+.side-tools.compact {
+  grid-template-columns: 1fr;
+}
+
+.side-tools .group-label {
+  margin-top: 6px;
+}
+
+.side-tools .tool,
+.side-tools .field {
+  width: 100%;
+}
+
 .tool-group {
   display: flex;
   align-items: center;
@@ -579,7 +597,7 @@ input[type="color"] {
   min-height: 0;
   display: grid;
   place-items: center;
-  padding: 24px;
+  padding: 18px;
   border-radius: 24px;
   background:
     radial-gradient(circle at 30% 20%, rgba(237, 93, 168, 0.18), transparent 30%),
@@ -589,8 +607,8 @@ input[type="color"] {
 
 .document-page {
   position: relative;
-  width: min(56vw, 560px);
-  max-width: calc(100% - 24px);
+  width: min(62vw, 640px);
+  max-width: calc(100% - 16px);
   aspect-ratio: 0.72;
   margin: 0;
   border-radius: 8px;

@@ -1,6 +1,6 @@
-# PDFeditEasy Web GUI Packaging Plan
+# Open PDF Web GUI Packaging Plan
 
-This folder is a dependency-free HTML prototype for the next PDFeditEasy user
+This folder is a dependency-free HTML prototype for the next Open PDF user
 interface. It is meant to become the frontend for a Microsoft Store-ready
 desktop app.
 
@@ -33,5 +33,5 @@ Connect the UI to the Python engine through one of these routes:
 2. WebView2/Tauri shell + small localhost backend.
 3. Python `pywebview` for a lighter wrapper while retaining Python packaging.
 
-For PDFeditEasy, option 1 is the most flexible and the most familiar for Store
+For Open PDF, option 1 is the most flexible and the most familiar for Store
 packaging. Option 3 is smaller and faster to migrate from the existing app.

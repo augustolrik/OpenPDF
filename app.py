@@ -33,8 +33,8 @@ from pdf_engine import (
 )
 
 
-APP_TITLE = "PDFeditEasy"
-PAGE_MARGIN = 36
+APP_TITLE = "Open PDF"
+PAGE_MARGIN = 22
 COLORS = {
     "purple": "#6036A6",
     "purple_dark": "#321B52",
@@ -145,14 +145,14 @@ class PdfEditor(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title(APP_TITLE)
-        self.geometry("1450x900")
+        self.geometry("1500x930")
         self.minsize(1050, 650)
         self.configure(bg=COLORS["surface"])
 
         self.document: fitz.Document | None = None
         self.filename: Path | None = None
         self.current_page = 0
-        self.zoom = 1.35
+        self.zoom = 1.05
         self.preview_photo: ImageTk.PhotoImage | None = None
         self.annotation_page: fitz.Page | None = None
         self.tool = "select"
@@ -292,37 +292,37 @@ class PdfEditor(tk.Tk):
         self.bind_all("<Control-s>", lambda _event: self.save_pdf())
         self.bind_all("<Control-z>", lambda _event: self.undo())
 
-        header = tk.Frame(self, bg=COLORS["purple_dark"], height=78)
+        header = tk.Frame(self, bg=COLORS["purple_dark"], height=68)
         header.pack(fill="x")
         header.pack_propagate(False)
 
         brand = tk.Frame(header, bg=COLORS["purple_dark"])
-        brand.pack(side="left", padx=(22, 30), fill="y")
+        brand.pack(side="left", padx=(18, 24), fill="y")
         logo = tk.Canvas(
             brand, width=43, height=43, bg=COLORS["purple_dark"], highlightthickness=0
         )
-        logo.pack(side="left", pady=17)
+        logo.pack(side="left", pady=12)
         rounded_rectangle(logo, 2, 2, 41, 41, 13, fill=COLORS["yellow"], outline="")
-        logo.create_text(21, 21, text="PD", fill=COLORS["purple_dark"], font=("Segoe UI Black", 11))
+        logo.create_text(21, 21, text="OP", fill=COLORS["purple_dark"], font=("Segoe UI Black", 11))
         title_box = tk.Frame(brand, bg=COLORS["purple_dark"])
-        title_box.pack(side="left", padx=(10, 0), pady=14)
+        title_box.pack(side="left", padx=(10, 0), pady=9)
         tk.Label(
             title_box,
-            text="PDFeditEasy",
+            text="Open PDF",
             bg=COLORS["purple_dark"],
             fg=COLORS["white"],
             font=("Segoe UI Semibold", 17),
         ).pack(anchor="w")
         tk.Label(
             title_box,
-            text="PDF workspace",
+            text="Clean PDF workspace",
             bg=COLORS["purple_dark"],
             fg="#CFC0E7",
             font=("Segoe UI", 8),
         ).pack(anchor="w")
 
         actions = tk.Frame(header, bg=COLORS["purple_dark"])
-        actions.pack(side="left", fill="y", pady=19)
+        actions.pack(side="left", fill="y", pady=14)
         RoundedButton(
             actions, "Open PDF", self.open_pdf, bg=COLORS["yellow"],
             fg=COLORS["purple_dark"], hover=COLORS["yellow_dark"], width=105,
@@ -334,7 +334,7 @@ class PdfEditor(tk.Tk):
         RoundedButton(
             header, "OCR pages", self.run_ocr, bg=COLORS["white"],
             fg=COLORS["purple"], hover=COLORS["purple_soft"], width=118,
-        ).pack(side="right", padx=22, pady=19)
+        ).pack(side="right", padx=18, pady=14)
 
         style.configure(
             "Modern.TNotebook",
@@ -358,98 +358,8 @@ class PdfEditor(tk.Tk):
         self.notebook.pack(fill="both", expand=True)
         self.editor_tab = tk.Frame(self.notebook, bg=COLORS["surface"])
         self.ocr_tab = tk.Frame(self.notebook, bg=COLORS["surface"])
-        self.notebook.add(self.editor_tab, text="PDF Editor")
+        self.notebook.add(self.editor_tab, text="Open PDF")
         self.notebook.add(self.ocr_tab, text="OCR Generator")
-
-        tool_strip = tk.Frame(self.editor_tab, bg=COLORS["white"], height=62)
-        tool_strip.pack(fill="x")
-        tool_strip.pack_propagate(False)
-        tk.Label(
-            tool_strip,
-            text="EDIT TOOLS",
-            bg=COLORS["white"],
-            fg=COLORS["muted"],
-            font=("Segoe UI Semibold", 8),
-        ).pack(side="left", padx=(23, 12))
-        for key in ("select", "edit_text", "text_box", "line", "shape", "image"):
-            width = 100
-            button = RoundedButton(
-                tool_strip,
-                TOOLS[key],
-                lambda value=key: self.set_tool(value),
-                bg=COLORS["purple_soft"],
-                fg=COLORS["purple_dark"],
-                hover="#DED0F4",
-                width=width,
-                height=36,
-            )
-            button.pack(side="left", padx=3, pady=13)
-            self.tool_buttons[key] = button
-
-        properties = tk.Frame(self.editor_tab, bg=COLORS["cream"], height=52)
-        properties.pack(fill="x")
-        properties.pack_propagate(False)
-        tk.Label(
-            properties, text="DRAWING PROPERTIES", bg=COLORS["cream"],
-            fg=COLORS["purple_dark"], font=("Segoe UI Semibold", 8),
-        ).pack(side="left", padx=(23, 14))
-        tk.Label(
-            properties, text="Figure", bg=COLORS["cream"], fg=COLORS["muted"],
-            font=("Segoe UI", 9),
-        ).pack(side="left")
-        self.shape_picker = ttk.Combobox(
-            properties, textvariable=self.shape_var, values=SHAPES,
-            state="readonly", width=11, style="Modern.TCombobox",
-        )
-        self.shape_picker.pack(side="left", padx=(6, 16), pady=12)
-        self.shape_picker.bind("<<ComboboxSelected>>", lambda _event: self.set_tool("shape"))
-
-        tk.Label(
-            properties, text="Line type", bg=COLORS["cream"], fg=COLORS["muted"],
-            font=("Segoe UI", 9),
-        ).pack(side="left")
-        self.line_style_picker = ttk.Combobox(
-            properties, textvariable=self.line_style_var, values=LINE_STYLES,
-            state="readonly", width=9, style="Modern.TCombobox",
-        )
-        self.line_style_picker.pack(side="left", padx=(6, 16), pady=12)
-        self.line_style_picker.bind("<<ComboboxSelected>>", lambda _event: self.set_tool("line"))
-
-        tk.Label(
-            properties, text="Width", bg=COLORS["cream"], fg=COLORS["muted"],
-            font=("Segoe UI", 9),
-        ).pack(side="left")
-        ttk.Spinbox(
-            properties,
-            values=(0.5, 1, 1.5, 2, 3, 4, 6, 8, 10, 12),
-            textvariable=self.line_width_var,
-            width=5,
-            state="readonly",
-            style="Modern.TSpinbox",
-        ).pack(side="left", padx=(6, 18), pady=12)
-
-        edge_group = tk.Frame(properties, bg=COLORS["cream"])
-        edge_group.pack(side="left", padx=(0, 15))
-        self.edge_swatch = self._make_swatch(edge_group, "#6036A6", self.choose_edge_color)
-        self.edge_swatch.pack(side="left", padx=(0, 5))
-        self._property_button(edge_group, "Edge colour", self.choose_edge_color).pack(side="left")
-
-        fill_group = tk.Frame(properties, bg=COLORS["cream"])
-        fill_group.pack(side="left")
-        self.fill_swatch = self._make_swatch(fill_group, "#FFD84D", self.choose_fill_color)
-        self.fill_swatch.pack(side="left", padx=(0, 5))
-        self._property_button(fill_group, "Fill colour", self.choose_fill_color).pack(side="left")
-        tk.Checkbutton(
-            properties,
-            text="Use fill",
-            variable=self.fill_enabled,
-            bg=COLORS["cream"],
-            fg=COLORS["purple_dark"],
-            activebackground=COLORS["cream"],
-            selectcolor=COLORS["white"],
-            font=("Segoe UI Semibold", 9),
-            bd=0,
-        ).pack(side="left", padx=12)
 
         body = tk.PanedWindow(
             self.editor_tab,
@@ -461,8 +371,8 @@ class PdfEditor(tk.Tk):
         )
         body.pack(fill="both", expand=True)
 
-        sidebar = tk.Frame(body, width=260, bg=COLORS["surface"], padx=16, pady=16)
-        body.add(sidebar, minsize=230, width=260)
+        sidebar = tk.Frame(body, width=218, bg=COLORS["surface"], padx=12, pady=12)
+        body.add(sidebar, minsize=190, width=218)
         tk.Label(
             sidebar,
             text="DOCUMENT PAGES",
@@ -499,29 +409,145 @@ class PdfEditor(tk.Tk):
         page_buttons.pack(fill="x")
         RoundedButton(
             page_buttons, "+ Blank", self.add_blank_page, bg=COLORS["purple_soft"],
-            fg=COLORS["purple_dark"], hover="#DED0F4", width=106, height=36,
+            fg=COLORS["purple_dark"], hover="#DED0F4", width=90, height=34,
         ).pack(side="left")
         RoundedButton(
             page_buttons, "+ PDF", self.insert_pdf, bg=COLORS["purple_soft"],
-            fg=COLORS["purple_dark"], hover="#DED0F4", width=106, height=36,
+            fg=COLORS["purple_dark"], hover="#DED0F4", width=90, height=34,
         ).pack(side="right")
         order_buttons = tk.Frame(sidebar, bg=COLORS["surface"])
         order_buttons.pack(fill="x", pady=(7, 0))
         RoundedButton(
             order_buttons, "Move up", lambda: self.move_page(-1), bg=COLORS["purple_soft"],
-            fg=COLORS["purple_dark"], hover="#DED0F4", width=106, height=34,
+            fg=COLORS["purple_dark"], hover="#DED0F4", width=90, height=32,
         ).pack(side="left")
         RoundedButton(
             order_buttons, "Move down", lambda: self.move_page(1), bg=COLORS["purple_soft"],
-            fg=COLORS["purple_dark"], hover="#DED0F4", width=106, height=34,
+            fg=COLORS["purple_dark"], hover="#DED0F4", width=90, height=32,
         ).pack(side="right")
         RoundedButton(
             sidebar, "Delete page", self.delete_page, bg="#FCE3EF",
-            fg=COLORS["pink_dark"], hover="#F7CADD", width=218, height=35,
+            fg=COLORS["pink_dark"], hover="#F7CADD", width=190, height=34,
         ).pack(pady=(7, 0))
 
         viewer = tk.Frame(body, bg=COLORS["workspace"])
         body.add(viewer, stretch="always")
+        right_tools = tk.Frame(body, width=218, bg=COLORS["surface"], padx=14, pady=14)
+        body.add(right_tools, minsize=200, width=218)
+        tk.Label(
+            right_tools,
+            text="TOOLS",
+            bg=COLORS["surface"],
+            fg=COLORS["purple_dark"],
+            font=("Segoe UI Semibold", 10),
+        ).pack(anchor="w")
+        tk.Label(
+            right_tools,
+            text="Choose when needed. The page stays large.",
+            bg=COLORS["surface"],
+            fg=COLORS["muted"],
+            font=("Segoe UI", 8),
+            wraplength=178,
+            justify="left",
+        ).pack(anchor="w", pady=(2, 10))
+        for key in ("select", "edit_text", "text_box", "line", "shape", "image"):
+            button = RoundedButton(
+                right_tools,
+                TOOLS[key],
+                lambda value=key: self.set_tool(value),
+                bg=COLORS["purple_soft"],
+                fg=COLORS["purple_dark"],
+                hover="#DED0F4",
+                width=178,
+                height=32,
+            )
+            button.pack(fill="x", pady=3)
+            self.tool_buttons[key] = button
+
+        tk.Frame(right_tools, bg=COLORS["purple_soft"], height=1).pack(fill="x", pady=10)
+        tk.Label(
+            right_tools, text="DRAW STYLE", bg=COLORS["surface"],
+            fg=COLORS["purple_dark"], font=("Segoe UI Semibold", 9),
+        ).pack(anchor="w", pady=(0, 6))
+        tk.Label(
+            right_tools, text="Figure", bg=COLORS["surface"], fg=COLORS["muted"],
+            font=("Segoe UI", 9),
+        ).pack(anchor="w")
+        self.shape_picker = ttk.Combobox(
+            right_tools, textvariable=self.shape_var, values=SHAPES,
+            state="readonly", width=18, style="Modern.TCombobox",
+        )
+        self.shape_picker.pack(fill="x", pady=(3, 8))
+        self.shape_picker.bind("<<ComboboxSelected>>", lambda _event: self.set_tool("shape"))
+        tk.Label(
+            right_tools, text="Line type", bg=COLORS["surface"], fg=COLORS["muted"],
+            font=("Segoe UI", 9),
+        ).pack(anchor="w")
+        self.line_style_picker = ttk.Combobox(
+            right_tools, textvariable=self.line_style_var, values=LINE_STYLES,
+            state="readonly", width=18, style="Modern.TCombobox",
+        )
+        self.line_style_picker.pack(fill="x", pady=(3, 8))
+        self.line_style_picker.bind("<<ComboboxSelected>>", lambda _event: self.set_tool("line"))
+        tk.Label(
+            right_tools, text="Width", bg=COLORS["surface"], fg=COLORS["muted"],
+            font=("Segoe UI", 9),
+        ).pack(anchor="w")
+        ttk.Spinbox(
+            right_tools,
+            values=(0.5, 1, 1.5, 2, 3, 4, 6, 8, 10, 12),
+            textvariable=self.line_width_var,
+            width=8,
+            state="readonly",
+            style="Modern.TSpinbox",
+        ).pack(fill="x", pady=(3, 8))
+        color_grid = tk.Frame(right_tools, bg=COLORS["surface"])
+        color_grid.pack(fill="x", pady=(2, 5))
+        self.edge_swatch = self._make_swatch(color_grid, "#6036A6", self.choose_edge_color, COLORS["surface"])
+        self.edge_swatch.pack(side="left", padx=(0, 5))
+        self._property_button(color_grid, "Edge", self.choose_edge_color, COLORS["surface"]).pack(side="left")
+        fill_grid = tk.Frame(right_tools, bg=COLORS["surface"])
+        fill_grid.pack(fill="x", pady=(0, 5))
+        self.fill_swatch = self._make_swatch(fill_grid, "#FFD84D", self.choose_fill_color, COLORS["surface"])
+        self.fill_swatch.pack(side="left", padx=(0, 5))
+        self._property_button(fill_grid, "Fill", self.choose_fill_color, COLORS["surface"]).pack(side="left")
+        tk.Checkbutton(
+            right_tools,
+            text="Use fill",
+            variable=self.fill_enabled,
+            bg=COLORS["surface"],
+            fg=COLORS["purple_dark"],
+            activebackground=COLORS["surface"],
+            selectcolor=COLORS["white"],
+            font=("Segoe UI Semibold", 9),
+            bd=0,
+        ).pack(anchor="w", pady=(0, 8))
+
+        tk.Frame(right_tools, bg=COLORS["purple_soft"], height=1).pack(fill="x", pady=8)
+        tk.Label(
+            right_tools, text="SELECTED OBJECT", bg=COLORS["surface"],
+            fg=COLORS["purple_dark"], font=("Segoe UI Semibold", 9),
+        ).pack(anchor="w", pady=(0, 6))
+        RoundedButton(
+            right_tools, "Edit text", self.edit_selected_text_object,
+            bg=COLORS["purple_soft"], fg=COLORS["purple_dark"], hover="#DED0F4",
+            width=178, height=32,
+        ).pack(fill="x", pady=3)
+        RoundedButton(
+            right_tools, "Rotate left", lambda: self.rotate_selected_object(-90),
+            bg=COLORS["purple_soft"], fg=COLORS["purple_dark"], hover="#DED0F4",
+            width=178, height=32,
+        ).pack(fill="x", pady=3)
+        RoundedButton(
+            right_tools, "Rotate right", lambda: self.rotate_selected_object(90),
+            bg=COLORS["purple_soft"], fg=COLORS["purple_dark"], hover="#DED0F4",
+            width=178, height=32,
+        ).pack(fill="x", pady=3)
+        RoundedButton(
+            right_tools, "Delete object", self.delete_selected_object,
+            bg="#FCE3EF", fg=COLORS["pink_dark"], hover="#F7CADD",
+            width=178, height=32,
+        ).pack(fill="x", pady=3)
         viewer_tools = tk.Frame(viewer, bg=COLORS["purple_deep"], height=49)
         viewer_tools.pack(fill="x")
         viewer_tools.pack_propagate(False)
@@ -549,26 +575,6 @@ class PdfEditor(tk.Tk):
             fg="#D9CEE3",
             font=("Segoe UI", 9),
         ).pack(side="right", padx=15)
-        RoundedButton(
-            viewer_tools, "Delete object", self.delete_selected_object,
-            bg="#5A2949", fg=COLORS["white"], hover=COLORS["pink_dark"],
-            width=104, height=30,
-        ).pack(side="left", padx=(4, 0), pady=9)
-        RoundedButton(
-            viewer_tools, "Edit text", self.edit_selected_text_object,
-            bg="#49325E", fg=COLORS["white"], hover=COLORS["purple"],
-            width=82, height=30,
-        ).pack(side="left", padx=4, pady=9)
-        RoundedButton(
-            viewer_tools, "Rotate right", lambda: self.rotate_selected_object(90),
-            bg="#49325E", fg=COLORS["white"], hover=COLORS["purple"],
-            width=96, height=30,
-        ).pack(side="left", padx=4, pady=9)
-        RoundedButton(
-            viewer_tools, "Rotate left", lambda: self.rotate_selected_object(-90),
-            bg="#49325E", fg=COLORS["white"], hover=COLORS["purple"],
-            width=92, height=30,
-        ).pack(side="left", padx=(8, 0), pady=9)
 
         canvas_frame = tk.Frame(viewer, bg=COLORS["workspace"])
         canvas_frame.pack(fill="both", expand=True)
@@ -616,9 +622,10 @@ class PdfEditor(tk.Tk):
         self.set_tool(self.tool)
         self._build_ocr_tab()
 
-    def _make_swatch(self, parent, color: str, command) -> tk.Canvas:
+    def _make_swatch(self, parent, color: str, command, background: str | None = None) -> tk.Canvas:
+        bg = background or COLORS["cream"]
         swatch = tk.Canvas(
-            parent, width=24, height=24, bg=COLORS["cream"],
+            parent, width=24, height=24, bg=bg,
             highlightthickness=0, cursor="hand2",
         )
         swatch.create_oval(
@@ -627,10 +634,11 @@ class PdfEditor(tk.Tk):
         swatch.bind("<Button-1>", lambda _event: command())
         return swatch
 
-    def _property_button(self, parent, text: str, command) -> tk.Button:
+    def _property_button(self, parent, text: str, command, background: str | None = None) -> tk.Button:
+        bg = background or COLORS["cream"]
         return tk.Button(
-            parent, text=text, command=command, bg=COLORS["cream"],
-            fg=COLORS["muted"], activebackground=COLORS["cream"],
+            parent, text=text, command=command, bg=bg,
+            fg=COLORS["muted"], activebackground=bg,
             activeforeground=COLORS["pink"], bd=0, cursor="hand2",
             font=("Segoe UI", 9),
         )
@@ -2049,7 +2057,7 @@ class PdfEditor(tk.Tk):
                     self.ocr_set_busy(False, f"Searchable PDF saved: {value}")
                     if messagebox.askyesno(
                         APP_TITLE,
-                        f"The searchable PDF was saved:\n{value}\n\nOpen it in the PDF Editor tab?",
+                        f"The searchable PDF was saved:\n{value}\n\nOpen it in the Open PDF tab?",
                     ):
                         self.open_pdf_path(value)
                 elif kind == "ocr_error":

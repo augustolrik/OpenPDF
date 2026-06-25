@@ -10,7 +10,9 @@ node_modules/
 dist/
 build/
 *.log
+desktop.ini
 .env
 .env.*
 tmp/
 temp/
+_archive_unused/

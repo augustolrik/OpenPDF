@@ -1,6 +1,6 @@
-# PDFeditEasy
+# Open PDF
 
-PDFeditEasy is a local Windows PDF editor built with Python, Tkinter, PyMuPDF,
+Open PDF is a local Windows PDF editor built with Python, Tkinter, PyMuPDF,
 Pillow, and Tesseract OCR.
 
 ## Features
@@ -27,7 +27,7 @@ Pillow, and Tesseract OCR.
 1. Run `Setup.bat`.
 2. Install Tesseract OCR if Setup reports that it is missing:
    https://github.com/UB-Mannheim/tesseract/wiki
-3. Run `Start PDFeditEasy.bat`.
+3. Run `Start Open PDF.bat`.
 
 ## Modern HTML GUI Prototype
 
@@ -40,7 +40,7 @@ the planned frontend for a future Electron, Tauri, WebView2, or pywebview build.
 ## Editing
 
 Use the **OCR Generator** tab to add images or a folder, inspect processed pages,
-edit OCR text, export a searchable PDF, and open it directly in the **PDF Editor**
+edit OCR text, export a searchable PDF, and open it directly in the **Open PDF**
 tab.
 
 Choose a tool on the toolbar:

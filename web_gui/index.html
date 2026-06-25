@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PDFeditEasy</title>
+    <title>Open PDF</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -12,7 +12,7 @@
         <div class="brand">
           <div class="brand-mark">PDF</div>
           <div>
-            <h1>PDFeditEasy</h1>
+            <h1>Open PDF</h1>
             <p>Professional PDF editor and OCR studio</p>
           </div>
         </div>
@@ -38,7 +38,7 @@
       </header>
 
       <nav class="workspace-tabs" aria-label="Workspace tabs">
-        <button class="workspace-tab active" data-workspace="editor">PDF Editor</button>
+        <button class="workspace-tab active" data-workspace="editor">Open PDF</button>
         <button class="workspace-tab" data-workspace="ocr">OCR Generator</button>
       </nav>
 
@@ -97,53 +97,9 @@
               </div>
             </div>
 
-            <div class="ribbon">
-              <div class="tool-group">
-                <span class="group-label">Select</span>
-                <button class="tool active" data-tool="select">Pointer</button>
-                <button class="tool" data-tool="text">Text box</button>
-                <button class="tool" data-tool="image">Image</button>
-              </div>
-
-              <div class="tool-group">
-                <span class="group-label">Draw</span>
-                <button class="tool" data-tool="line">Line</button>
-                <button class="tool" data-tool="shape">Shape</button>
-                <select class="field" aria-label="Shape type">
-                  <option>Rectangle</option>
-                  <option>Square</option>
-                  <option>Circle</option>
-                </select>
-              </div>
-
-              <div class="tool-group">
-                <span class="group-label">Style</span>
-                <label class="color-field">
-                  <span>Edge</span>
-                  <input type="color" value="#6036a6" />
-                </label>
-                <label class="color-field">
-                  <span>Fill</span>
-                  <input type="color" value="#ffd84d" />
-                </label>
-                <select class="field" aria-label="Line type">
-                  <option>Solid</option>
-                  <option>Dotted</option>
-                  <option>Arrow</option>
-                </select>
-              </div>
-
-              <div class="tool-group object-actions">
-                <span class="group-label">Object</span>
-                <button class="tool" data-transform="rotate-left">Rotate left</button>
-                <button class="tool" data-transform="rotate-right">Rotate right</button>
-                <button class="tool danger" data-transform="delete">Delete</button>
-              </div>
-            </div>
-
             <div class="canvas-wrap">
               <div class="document-page" id="document-page" aria-label="PDF canvas">
-                <div class="pdf-text line-one">PDFeditEasy professional document workspace</div>
+                <div class="pdf-text line-one">Open PDF professional document workspace</div>
                 <div class="pdf-text line-two">Click objects to select, drag to move, use handles to resize.</div>
                 <div class="editable-object object-text selected" data-kind="Text box">
                   <span>Editable text box</span>
@@ -157,9 +113,46 @@
           </section>
 
           <aside class="panel inspector">
-            <span class="eyebrow">Inspector</span>
+            <span class="eyebrow">Tools</span>
             <h2 id="selection-title">Text box</h2>
-            <p class="muted">Selected object properties</p>
+            <p class="muted">Use side tools so the A4 page stays large.</p>
+
+            <div class="side-tools">
+              <span class="group-label">Select</span>
+              <button class="tool active" data-tool="select">Pointer</button>
+              <button class="tool" data-tool="text">Text box</button>
+              <button class="tool" data-tool="image">Image</button>
+              <span class="group-label">Draw</span>
+              <button class="tool" data-tool="line">Line</button>
+              <button class="tool" data-tool="shape">Shape</button>
+              <select class="field" aria-label="Shape type">
+                <option>Rectangle</option>
+                <option>Square</option>
+                <option>Circle</option>
+              </select>
+              <span class="group-label">Style</span>
+              <label class="color-field">
+                <span>Edge</span>
+                <input type="color" value="#6036a6" />
+              </label>
+              <label class="color-field">
+                <span>Fill</span>
+                <input type="color" value="#ffd84d" />
+              </label>
+              <select class="field" aria-label="Line type">
+                <option>Solid</option>
+                <option>Dotted</option>
+                <option>Arrow</option>
+              </select>
+            </div>
+
+            <div class="section-divider"></div>
+            <span class="eyebrow">Object</span>
+            <div class="object-actions side-tools compact">
+              <button class="tool" data-transform="rotate-left">Rotate left</button>
+              <button class="tool" data-transform="rotate-right">Rotate right</button>
+              <button class="tool danger" data-transform="delete">Delete</button>
+            </div>
 
             <label class="form-row">
               <span>X position</span>
@@ -204,7 +197,7 @@
             <div class="support-card">
               <span class="eyebrow">Free app</span>
               <strong>Voluntary support</strong>
-              <p>PDFeditEasy can stay free, with an optional support button for users who want to help development.</p>
+              <p>Open PDF can stay free, with an optional support button for users who want to help development.</p>
               <button class="button button-yellow wide" data-action="support">Support project</button>
             </div>
           </aside>
@@ -266,7 +259,7 @@
                   </div>
                   <button class="button button-soft">Edit</button>
                 </div>
-                <textarea spellcheck="false">PDFeditEasy can turn photos and screenshots into searchable PDFs, then open the result directly in the editor tab.</textarea>
+                <textarea spellcheck="false">Open PDF can turn photos and screenshots into searchable PDFs, then open the result directly in the editor tab.</textarea>
               </div>
             </div>
           </section>
