@@ -1993,8 +1993,12 @@ class PdfEditor(tk.Tk):
         if not self.require_document() or self.busy:
             return
         value = simpledialog.askstring(
-            "OCR selected pages",
-            f"Pages (examples: 1,3-5 or all).\nCurrent page is {self.current_page + 1}:",
+            "OCR opened PDF",
+            (
+                "This adds an invisible searchable text layer to the opened PDF.\n"
+                "After OCR finishes, save the searchable PDF.\n\n"
+                f"Pages (examples: 1,3-5 or all).\nCurrent page is {self.current_page + 1}:"
+            ),
             initialvalue=str(self.current_page + 1),
             parent=self,
         )
@@ -2039,7 +2043,33 @@ class PdfEditor(tk.Tk):
                     self.progress.stop()
                     pages, words = value
                     self.render_current()
-                    self.status_var.set(f"OCR complete: {words} words on {pages} page(s)")
+                    if words:
+                        self.status_var.set(
+                            f"OCR added: {words} words on {pages} page(s). Save the searchable PDF."
+                        )
+                        if messagebox.askyesno(
+                            APP_TITLE,
+                            (
+                                f"OCR added {words} searchable words on {pages} page(s).\n\n"
+                                "The text layer is invisible, so the page may look the same.\n"
+                                "Save a searchable PDF now?"
+                            ),
+                            parent=self,
+                        ):
+                            self.save_as()
+                    else:
+                        self.status_var.set(
+                            f"OCR finished but found no readable words on {pages} page(s)"
+                        )
+                        messagebox.showinfo(
+                            APP_TITLE,
+                            (
+                                "OCR finished, but Tesseract did not find readable words.\n\n"
+                                "This can happen if the page is already text-based, the scan is blurry, "
+                                "or the page language/contrast is poor."
+                            ),
+                            parent=self,
+                        )
                 elif kind == "ocr_status":
                     self.ocr_status_var.set(value)
                 elif kind == "ocr_pages":
