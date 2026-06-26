@@ -1,3 +1,6 @@
+from pathlib import Path
+import shutil
+
 from PIL import Image, ImageDraw, ImageFont
 
 
@@ -5,6 +8,14 @@ SIZES = (16, 24, 32, 48, 64, 128, 256)
 PURPLE = "#321B52"
 PINK = "#ED5DA8"
 YELLOW = "#FFD84D"
+BRAND_ICON = Path(__file__).with_name("Cat logo.ico")
+OUTPUT_ICON = Path(__file__).with_name("OpenPDF.ico")
+
+
+if BRAND_ICON.exists():
+    shutil.copyfile(BRAND_ICON, OUTPUT_ICON)
+    print(f"Created {OUTPUT_ICON.name} from {BRAND_ICON.name}")
+    raise SystemExit(0)
 
 
 def font(size: int):
@@ -93,8 +104,8 @@ for size in SIZES:
     images.append(image)
 
 images[-1].save(
-    "OpenPDF.ico",
+    OUTPUT_ICON,
     format="ICO",
     sizes=[(size, size) for size in SIZES],
 )
-print("Created OpenPDF.ico")
+print(f"Created {OUTPUT_ICON.name}")

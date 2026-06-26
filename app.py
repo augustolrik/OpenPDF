@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import os
 import math
 import json
 import queue
+import tempfile
 import threading
 import traceback
 from dataclasses import dataclass
@@ -183,12 +185,27 @@ class PdfEditor(tk.Tk):
         self.ocr_already_cropped_var = tk.BooleanVar(value=False)
         self.ocr_status_var = tk.StringVar(value="Ready")
         self.ocr_progress_var = tk.DoubleVar(value=0)
+        self.print_temp_files: list[Path] = []
 
         self.status_var = tk.StringVar(value="Open a PDF to begin")
         self.page_var = tk.StringVar(value="No document")
         self.tool_var = tk.StringVar(value=TOOLS[self.tool])
         self._build_ui()
+        self.protocol("WM_DELETE_WINDOW", self.close_app)
         self.after(100, self._poll_events)
+
+    def close_app(self) -> None:
+        for path in self.print_temp_files:
+            try:
+                path.unlink(missing_ok=True)
+            except OSError:
+                pass
+        if self.document:
+            try:
+                self.document.close()
+            except Exception:
+                pass
+        self.destroy()
 
     def _build_ui(self) -> None:
         self.option_add("*Font", "{Segoe UI} 10")
@@ -268,8 +285,9 @@ class PdfEditor(tk.Tk):
         file_menu.add_command(label="Open PDF...", command=self.open_pdf, accelerator="Ctrl+O")
         file_menu.add_command(label="Save", command=self.save_pdf, accelerator="Ctrl+S")
         file_menu.add_command(label="Save as...", command=self.save_as)
+        file_menu.add_command(label="Print...", command=self.print_pdf, accelerator="Ctrl+P")
         file_menu.add_separator()
-        file_menu.add_command(label="Exit", command=self.destroy)
+        file_menu.add_command(label="Exit", command=self.close_app)
         menu.add_cascade(label="File", menu=file_menu)
 
         page_menu = tk.Menu(menu, tearoff=False, bd=0)
@@ -290,6 +308,7 @@ class PdfEditor(tk.Tk):
 
         self.bind_all("<Control-o>", lambda _event: self.open_pdf())
         self.bind_all("<Control-s>", lambda _event: self.save_pdf())
+        self.bind_all("<Control-p>", lambda _event: self.print_pdf())
         self.bind_all("<Control-z>", lambda _event: self.undo())
 
         header = tk.Frame(self, bg=COLORS["purple_dark"], height=68)
@@ -345,6 +364,10 @@ class PdfEditor(tk.Tk):
         RoundedButton(
             actions, "Save", self.save_pdf, bg=COLORS["pink"],
             fg=COLORS["white"], hover=COLORS["pink_dark"], width=88,
+        ).pack(side="left", padx=4)
+        RoundedButton(
+            actions, "Print", self.print_pdf, bg=COLORS["white"],
+            fg=COLORS["purple"], hover=COLORS["purple_soft"], width=88,
         ).pack(side="left", padx=4)
         RoundedButton(
             header, "OCR pages", self.run_ocr, bg=COLORS["white"],
@@ -1253,6 +1276,40 @@ class PdfEditor(tk.Tk):
             self.render_current()
         except Exception as error:
             messagebox.showerror(APP_TITLE, str(error))
+
+    def print_pdf(self) -> None:
+        if not self.require_document():
+            return
+        try:
+            with tempfile.NamedTemporaryFile(
+                prefix="openpdf_print_",
+                suffix=".pdf",
+                delete=False,
+            ) as handle:
+                print_path = Path(handle.name)
+            self.document.save(print_path, garbage=4, deflate=True)
+            self.print_temp_files.append(print_path)
+            os.startfile(str(print_path), "print")
+            self.status_var.set("Print sent to Windows")
+            messagebox.showinfo(
+                APP_TITLE,
+                (
+                    "The PDF was sent to Windows print.\n\n"
+                    "If nothing happens, check that a default PDF reader and printer are installed."
+                ),
+                parent=self,
+            )
+        except Exception as error:
+            messagebox.showerror(
+                APP_TITLE,
+                (
+                    "Could not print the PDF.\n\n"
+                    "Windows prints through your default PDF reader. Make sure a PDF reader "
+                    "and printer are installed, then try again.\n\n"
+                    f"Details: {error}"
+                ),
+                parent=self,
+            )
 
     def snapshot(self) -> None:
         if self.document:

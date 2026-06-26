@@ -9,6 +9,7 @@ desktop version. The cat logo is part of the OpenPDF brand.
 ## Current Features
 
 - Open and save PDF files
+- Print PDFs with `Ctrl+P`
 - Add blank pages and insert pages from another PDF
 - Delete, move, and reorder pages
 - Replace an existing line of PDF text
@@ -69,3 +70,9 @@ in a PDF reader.
 
 If OCR reports zero readable words, the scan may already contain real text, may
 be too blurry, or may need better contrast/language support.
+
+## Print Notes
+
+Press `Ctrl+P` or use `File > Print`. OpenPDF sends a temporary PDF to Windows
+print through the default PDF reader. A PDF reader and printer must be installed
+for printing to work.
