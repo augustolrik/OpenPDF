@@ -1178,17 +1178,55 @@ class PdfEditor(tk.Tk):
         if self.filename is None:
             self.save_as()
             return
+        destination = self.filename
         try:
-            destination = self.filename
-            temporary = destination.with_name(destination.stem + ".pdfediteasy.tmp.pdf")
+            self.document.saveIncr()
+            self.status_var.set(f"Saved {destination}")
+            messagebox.showinfo(APP_TITLE, f"Saved:\n{destination}", parent=self)
+            self.render_current()
+            return
+        except Exception as error:
+            incremental_error = error
+
+        temporary = destination.with_name(destination.stem + ".openpdf.tmp.pdf")
+        try:
             self.document.save(temporary, garbage=4, deflate=True)
+            current_page = self.current_page
             self.document.close()
+            self.document = None
             temporary.replace(destination)
             self.document = fitz.open(destination)
+            self.current_page = min(current_page, self.document.page_count - 1)
+            self.selected_annot_xref = None
+            self._refresh_pages()
             self.status_var.set(f"Saved {destination}")
+            messagebox.showinfo(APP_TITLE, f"Saved:\n{destination}", parent=self)
             self.render_current()
         except Exception as error:
-            messagebox.showerror(APP_TITLE, str(error))
+            if self.document is None and destination.exists():
+                try:
+                    self.document = fitz.open(destination)
+                    self._refresh_pages()
+                    self.render_current()
+                except Exception:
+                    pass
+            messagebox.showerror(
+                APP_TITLE,
+                (
+                    "Could not overwrite the PDF.\n\n"
+                    "If it is open in another PDF reader, close it and try again.\n"
+                    "You can also use Save as to write a new file.\n\n"
+                    f"First save attempt: {incremental_error}\n"
+                    f"Fallback save attempt: {error}"
+                ),
+                parent=self,
+            )
+        finally:
+            if temporary.exists():
+                try:
+                    temporary.unlink()
+                except OSError:
+                    pass
 
     def save_as(self) -> None:
         if not self.require_document():
@@ -1202,9 +1240,17 @@ class PdfEditor(tk.Tk):
         if not destination:
             return
         try:
+            current_page = self.current_page
             self.document.save(destination, garbage=4, deflate=True)
             self.filename = Path(destination)
+            self.document.close()
+            self.document = fitz.open(destination)
+            self.current_page = min(current_page, self.document.page_count - 1)
+            self.selected_annot_xref = None
+            self._refresh_pages()
             self.status_var.set(f"Saved {destination}")
+            messagebox.showinfo(APP_TITLE, f"Saved:\n{destination}", parent=self)
+            self.render_current()
         except Exception as error:
             messagebox.showerror(APP_TITLE, str(error))
 
